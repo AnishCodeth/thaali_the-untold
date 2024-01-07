@@ -1,10 +1,18 @@
-function functionA() {
-    function functionB() {
-      console.trace('Printing stack trace:');
-    }
-    
-    functionB();
-  }
-  
-  functionA();
-  
+const a=(b)=>{
+return ()=>{
+     return b()
+}
+}
+
+const b=a( ()=>{
+    return 'ansih';
+})
+
+const c= ()=>{
+console.log(b())
+
+}
+c()
+
+
+

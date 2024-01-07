@@ -1,4 +1,4 @@
-const customError=require('../function/customerror')
+const  customError=require('../functions/customerror')
 
 
 const development=(res,err)=>{
@@ -31,8 +31,7 @@ return new customError(`invalid value ${err.value} for field ${err.path}`,400)
 
 }
 
-const errors=async(err,req,res,next)=>{
-console.log(process.env.NODE_ENV)
+const error_middleware=async(err,req,res,next)=>{
 if(process.env.NODE_ENV=='development'){
 development(res,err)
 }
@@ -44,4 +43,4 @@ production(res,err)
 }
 }
 
-module.exports=errors
+module.exports={error_middleware}
