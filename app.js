@@ -18,7 +18,10 @@ const connectfirebase = require('./configurations/connectfirebase.js');
 const { refresh } = require('./controller/refresh.js');
 app.use('/refresh',refresh)
 app.use('/authorize',vendor_login)
-app.use('/',vendor)
+app.use('/vendor',vendor)
+
+const {send}=require('./controller/khalti.js')
+app.use('/send',send)
 
 
 
@@ -28,11 +31,11 @@ const {error_middleware}=require('./middleware/error.js');
 
 app.use(error_middleware)
 
-
+const PORT=process.env.PORT || 5000
 const start=async()=>{
     try{
         await connectfirebase();
-        app.listen(5000,()=>{
+        app.listen(PORT,()=>{
             console.log("Connection success!!")
         })
     }

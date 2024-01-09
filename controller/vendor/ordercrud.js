@@ -1,29 +1,25 @@
-const { photo_firebase_url } = require("../functions/firebasecrud");
-const { connectDB, disconnectDB } = require("../configurations/connectpg");
-const {noTryCatch}=require('../functions/notrycatch');
-const { form_to_json } = require("../functions/form_json");
-const customError=require('../functions/customerror')
+const { photo_firebase_url } = require("../../functions/firebasecrud");
+const { connectDB, disconnectDB } = require("../../configurations/connectpg");
+const {noTryCatch}=require('../../functions/notrycatch');
+const { form_to_json } = require("../../functions/form_json");
+const customError=require('../../functions/customerror');
+const { add_query } = require("../../crud.js/add");
 
 const add_order=noTryCatch(async (req,res)=>{
 //to do is add triggerd function to update the orderoffood take this id and add in table on payment done store in the history
+const booking_id='anish1'
+req.body.booking_id=booking_id;
+const table_id='table1'
+req.body.table_id=table_id //table_id and booking_id must be in cookies
 const to_add=req.body;
-const table_id=to_add.table_id;
-let values=Object.values(to_add);
+
 const client=await connectDB();
 
-if((await client.query(`select * from order_data where table_id=$1`,[table_id])).rows.length!=0)
+
+if((await client.query(`select * from order_data where table_id=$1 and booking_id=$2`,[table_id,booking_id])).rows.length==0)
 throw new customError("Table is already booked",500)
 
-let values_params=``;
-let index=0;
-const columns=Object.keys(to_add).join(',');
-Object.values(to_add).forEach((value)=>{
-    index++;
-    values_params+=`$${index},`
-})
-values_params=values_params.slice(0,-1);
-
-const query=`insert into order_data(${columns}) values (${values_params});`
+const {query,values}=await add_query(req.body,'order_data')
 await client.query(query,values)
 res.json('order added successfully');
 })

@@ -1,7 +1,7 @@
-const { photo_firebase_url } = require("../functions/firebasecrud");
-const { connectDB, disconnectDB } = require("../configurations/connectpg");
-const {noTryCatch}=require('../functions/notrycatch');
-const { form_to_json } = require("../functions/form_json");
+const { photo_firebase_url } = require("../../functions/firebasecrud");
+const { connectDB, disconnectDB } = require("../../configurations/connectpg");
+const {noTryCatch}=require('../../functions/notrycatch');
+const { form_to_json } = require("../../functions/form_json");
 
 
 const menu_add = noTryCatch(async (req, res) => {
@@ -47,7 +47,7 @@ const menu_add = noTryCatch(async (req, res) => {
     `);
     res.json(pgres.rows);
 
-    res.status(500).json({ error: err.message });
+
   
 });
 

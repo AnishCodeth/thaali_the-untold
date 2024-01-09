@@ -1,18 +1,7 @@
-const a=(b)=>{
-return ()=>{
-     return b()
-}
-}
+setTimeout(()=>{
+console.log('hi')
+},2000)
 
-const b=a( ()=>{
-    return 'ansih';
-})
-
-const c= ()=>{
-console.log(b())
-
-}
-c()
-
-
-
+setTimeout(()=>{
+    console.log('hi ansih')
+    },100)

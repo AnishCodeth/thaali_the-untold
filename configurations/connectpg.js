@@ -9,7 +9,7 @@ const connectDB = async (db_name) => {
   console.log(db_name)
   const client = new Client({
     user: 'postgres',
-    host: 'localhost',
+    host: 'process.env.POSTGRES_HOST',
     database: db_name,
     password: 'sql333',
     port: 5432,

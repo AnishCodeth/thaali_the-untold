@@ -5,11 +5,12 @@
 --     served_status CHAR(1) NOT NULL DEFAULT 'N',
 --     table_id TEXT NOT NULL,
 --     quantity INT DEFAULT 1,
--- 	order_id serial primary key,
+--     description text,
+       booking_id text not null,
 --     CHECK (served_status = 'S' OR served_status = 'N'),
 --     CHECK (EXTRACT(EPOCH FROM order_time::TIME) != 0),
 --     CHECK (quantity > 0)
--- );,
+-- );
 
 
 //for user credentials
@@ -18,3 +19,22 @@ create table vendor_credentials(
     email text not null primary key,
     password text not null
 )
+
+//for vendor profile
+drop table if exists vendor_profile;
+
+create table vendor_profile(
+email varchar(255) references vendor_credentials(email) on delete cascade,
+name varchar(255) not null ,
+phone_number bigint not null,
+photos text,
+description text,
+booking_status bool,
+username int primary key,//dont forget to change
+latitude numeric,
+longitude numeric  --will be in squared form
+)
+
+
+
+
