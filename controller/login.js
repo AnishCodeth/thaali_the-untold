@@ -31,10 +31,8 @@ const loginController = noTryCatch(async (req, res) => {
 
 const registerController = noTryCatch(async (req, res, next) => {
   //this is how user must send me data
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return next(new customError("Provide email and Password", 500));
-  }
+  const { email, password,username} = req.body;
+
   const client = await connectDB("vendors");
   let pgres = await client.query(
     `select * from vendor_credentials where email=$1`,

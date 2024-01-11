@@ -9,10 +9,10 @@ const connectDB = async (db_name) => {
   console.log(db_name)
   const client = new Client({
     user: 'postgres',
-    host: 'process.env.POSTGRES_HOST',
+    host: process.env.PGHOST,
     database: db_name,
-    password: 'sql333',
-    port: 5432,
+    password:process.env.PGPASSWORD,
+    port: process.env.PGPORT,
   });
   try {
     if (!client._connected) {

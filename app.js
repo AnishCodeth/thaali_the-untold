@@ -12,16 +12,21 @@ require('dotenv').config()
 //for testing purpose
 const vendor=require('./routes/vendor.js');
 const vendor_login=require('./routes/vendor_login.js')
+const user_3a=require('./routes/user.js')
 const connectfirebase = require('./configurations/connectfirebase.js');
 
 
 const { refresh } = require('./controller/refresh.js');
+
+
 app.use('/refresh',refresh)
 app.use('/authorize',vendor_login)
 app.use('/vendor',vendor)
+app.use('/c',user_3a)
 
 const {send}=require('./controller/khalti.js')
 app.use('/send',send)
+
 
 
 
