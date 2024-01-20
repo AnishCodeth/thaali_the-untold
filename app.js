@@ -4,6 +4,8 @@ const cookieParser=require('cookie-parser')
 const {error_middleware}=require('./middleware/error.js');
 const thaaliroute=require('./router.js')
 const connectfirebase = require('./configurations/connectfirebase.js');
+const { connectDB } = require('./configurations/connectpg.js');
+
 
 //for parsing
 app.use(express.json());
