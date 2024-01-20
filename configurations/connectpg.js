@@ -1,26 +1,24 @@
 // postgres.js
+require('dotenv').config()
 
-const { Client } = require('pg');
+const {Pool}=require('pg')
+const poolConfig={
+  max:5,
+  min:2,
+  idleTimeoutMillis:600000
+}
 
+const userName= process.env.PGUSERNAME
+const host= process.env.PGHOST
+const database= process.env.PGDBNAME
+const password=process.env.PGPASSWORD
+const port= process.env.PGPORT
 
+poolConfig.connectionString=`postgres://${userName}:${password}@${host}:${port}/${database}`;
 
 const connectDB = async () => {
-  const client = new Client({
-    user: 'postgres',
-    host: process.env.PGHOST,
-    database: process.env.PGDBNAME,
-    password:process.env.PGPASSWORD,
-    port: process.env.PGPORT,
-  });
-  try {
-    if (!client._connected) {
-      await client.connect();
-      console.log('Connected to PostgreSQL');
-    }
-    return client;
-  } catch (error) {
-    throw new Error('Error connecting to PostgreSQL: ' + error.message);
-  }
+  console.log(userName)
+return new Pool(poolConfig)
 };
 
 const disconnectDB = async () => {
