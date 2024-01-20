@@ -3,26 +3,28 @@ const { connectDB, disconnectDB } = require("../configurations/connectpg");
 const { encrypt, matched } = require("../functions/decryptencryptpassword");
 const { StatusCodes } = require("http-status-codes");
 const { createcode } = require("../functions/createcode");
-const { createJWT, decodeJWT } = require("../functions/JWT/createJWT");
+const { createJWT, decodeJWT } = require("../functions/createJWT");
 const customError = require("../functions/customerror");
 const { HttpStatusCode } = require("axios");
 const { sendmail } = require("../functions/nodemailer");
 
 const loginController = noTryCatch(async (req, res) => {
-  let { email, password } = req.body;
-  const client = await connectDB("vendors");
+  let { email, password,role,username} = req.body;
+  role=role.toUpperCase()
+  const client = await connectDB();
 
   let pgres = await client.query(
-    `select * from vendor_credentials where email=$1`,
+    `select * from ${role}_CREDENTIAL where email=$1`,
     [email]
   );
   if (pgres.rows.length == 0)
     return res.json({ msg: "invalid email or password" });
   encode_password = await matched(password, pgres.rows[0].password);
   if (encode_password) {
-    const access_token = createJWT({ email }, { expiresIn: 60 * 5 }, "access");
-    const refresh_token = createJWT({ email }, { expiresIn: "1d" }, "refresh");
-    res.cookie("refresh_token", refresh_token, { httpOnly: true });
+    const access_token = createJWT({ email }, { expiresIn: "1 yr" }, "access");
+    const refresh_token = createJWT({ email }, { expiresIn: "2 hr" }, "refresh");
+    res.cookie("refresh_token", refresh_token, { httpOnly: true});
+    res.cookie("username",username,{httpOnly:true});
     return res.json({ access_token });
   } else {
     return res.json({ msg: "email or password is incorrect" });
@@ -31,13 +33,23 @@ const loginController = noTryCatch(async (req, res) => {
 
 const registerController = noTryCatch(async (req, res, next) => {
   //this is how user must send me data
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return next(new customError("Provide email and Password", 500));
-  }
-  const client = await connectDB("vendors");
+  let {role}=req.query;
+  role=role.toUpperCase();
+  const { email, password,username} = req.body;
+
+  const client = await connectDB();
+  await client.query(`CREATE TABLE IF NOT EXISTS ${role}_CREDENTIAL (
+    email VARCHAR(320) NOT NULL unique,
+    password VARCHAR(100) NOT NULL CHECK (LENGTH(password) >= 8 AND
+                                           password ~ '[A-Z]' AND
+                                           password ~ '[0-9]' AND
+                                           password ~ '[^A-Za-z0-9]'),
+    username TEXT NOT NULL unique,
+    primary key(username,email)
+);`)
+
   let pgres = await client.query(
-    `select * from vendor_credentials where email=$1`,
+    `select * from ${role}_CREDENTIAL where email=$1`,
     [email]
   );
 
@@ -47,29 +59,31 @@ const registerController = noTryCatch(async (req, res, next) => {
     );
 
   const code = createcode();
-  const token = createJWT({ email, code });
+  const token = createJWT({ email, code,role,username,password});
 
   //errorc
   //this is the format i send to user on hitting submit in register page
   await sendmail(email, code, next);
+  res.cookie('email_token',token)
   return res.status(StatusCodes.OK).json({ token: token }); //remove code later
 });
 
-const emailverifyController = noTryCatch(async (req, res) => {
+const emailverifyController = noTryCatch(async (req, res,next) => {
   //this is how user send data after hitting submit in verification page number must send in string
-  const token = req.headers.authorization.split(" ")[1];
+  const token = req.cookies.email_token;
+
   const code = req.body.code;
-  const email = req.body.email;
   // const decodecode=createcode(token)
   const decode = decodeJWT(token);
-  console.log(decode);
-  if (code == decode.code && email == decode.email) {
+  const {email,role,username}=decode;
+  if (code == decode.code) {
     const password = await encrypt(decode.password);
-    console.log(password);
-    const client = await connectDB("vendors");
+    console.log(decode)
+
+    const client = await connectDB();
     await client.query(
-      `insert into vendor_credentials(email,password) values($1,$2)`,
-      [email, password]
+      `insert into ${role}_CREDENTIAL(email,password,username) values($1,$2,$3)`,
+      [email, password,username]
     );
     return res.json({ msg: "Registered successfully" });
   } else {

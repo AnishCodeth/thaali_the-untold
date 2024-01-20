@@ -1,6 +1,6 @@
-const { photo_firebase_url } = require("../../functions/firebasecrud");
-const { connectDB, disconnectDB } = require("../../configurations/connectpg");
-const {noTryCatch}=require('../../functions/notrycatch');
+const { photo_firebase_url } = require("../functions/firebasecrud");
+const { connectDB, disconnectDB } = require("../configurations/connectpg");
+const {noTryCatch}=require('../functions/notrycatch');
 
 const display_order_history=noTryCatch(async(req,res)=>{
     const client=await connectDB()

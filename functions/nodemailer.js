@@ -5,7 +5,7 @@ const customError = require('./customerror');
 const client_id='962289731781-co5fo5fslf29qvctgsdp2uab1ft06303.apps.googleusercontent.com'
 const client_secret='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'
 const redirect_uri='https://developers.google.com/oauthplayground'
-const refresh_Token='1//04g0PywSTu3iyCgYIARAAGAQSNwF-L9Irhitg0qfo72E0OxU-qqNPrrWNZE8HLRVaCGP3zQK67l6R1QbNa_yZOeZ8xDna8gIAWnU'
+const refresh_Token='1//040rIUis-OTKQCgYIARAAGAQSNwF-L9IrXzCO3GRRHq9GvG-27dik1qQHygRDr9ZEOwLddPhWCV9eBFRl_XX5hXWt6CFdl9rYhCc'
 require('dotenv').config()
 
 // const emailVerification=async (gmail_id,code)=>{
@@ -71,7 +71,6 @@ const  mailOptions = {
        return result;
     }
     catch(error){
-        console.log(error)
         throw new customError(error)
     }
 }
