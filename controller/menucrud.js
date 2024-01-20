@@ -49,6 +49,7 @@ const menu_add = noTryCatch(async (req, res) => {
 });
 
 const menu_display = async (req, res) => {
+  console.log('in menu')
   //vendor must be send in url
   const {query}=req
   let query_sql = `select * from (select * from menu where restaurant_id=1) where 1=1`;//restaurant_id=sth
