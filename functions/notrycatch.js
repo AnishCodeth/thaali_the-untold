@@ -5,9 +5,8 @@ const noTryCatch= (func)=>{
 }
 
 const noTRyCatchReturn=(func)=>{
-return (req,res,next)=>{
-    console.log('hi')
-    return func(req,res,next).catch(err=>next(err))
+return (next)=>{
+    return func(next).catch(err=>next(err))
 }
 }
 

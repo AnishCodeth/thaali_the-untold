@@ -2,7 +2,7 @@
 const { StatusCodes } = require('http-status-codes')
 const { noTryCatch } = require('../functions/notrycatch')
 const { connectDB } = require('../configurations/connectpg')
-const { decodeJWT } = require('../functions/JWT/createJWT')
+const { decodeJWT } = require('../functions/createJWT')
 
 
 

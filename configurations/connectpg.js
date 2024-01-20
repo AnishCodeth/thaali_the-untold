@@ -4,13 +4,11 @@ const { Client } = require('pg');
 
 
 
-const connectDB = async (db_name) => {
-  db_name= db_name||'vendor'
-  console.log(db_name)
+const connectDB = async () => {
   const client = new Client({
     user: 'postgres',
     host: process.env.PGHOST,
-    database: db_name,
+    database: process.env.PGDBNAME,
     password:process.env.PGPASSWORD,
     port: process.env.PGPORT,
   });

@@ -1,23 +1,14 @@
-const { photo_firebase_url } = require("../../functions/firebasecrud");
-const { connectDB, disconnectDB } = require("../../configurations/connectpg");
-const {noTryCatch}=require('../../functions/notrycatch');
-const { form_to_json } = require("../../functions/form_json");
+const { photo_firebase_url } = require("../functions/firebasecrud");
+const { connectDB, disconnectDB } = require("../configurations/connectpg");
+const {noTryCatch}=require('../functions/notrycatch');
+const { form_to_json } = require("../functions/form_json");
+const { add_query } = require("./add");
 
 
 const menu_add = noTryCatch(async (req, res) => {
   //req.body must be array of the json
-  let url = {};
-  const {
-    food_name,
-    category,
-    description,
-    discount_percentage,
-    price,
-    available,
-    restaurant_id,
-  } = req.body;
-  console.log(food_name[1]);
-  const n = req.body.food_name.length;
+  // let url = {};
+  // const n = req.body.food_name.length;
   //for the images
   // const n = req.files.length;
   // const promises_url = [];
@@ -33,28 +24,34 @@ const menu_add = noTryCatch(async (req, res) => {
   //   );
   // }
   // await Promise.all(promises_url);
-  let values = "";
-  for (let i = 0; i < n; i++) {
-    values += `('${category[i]}','${food_name[i]}',${price[i]},'${description[i]}','${discount_percentage[i]}','${available[i]}','${restaurant_id[i]}'),`;
-  }
-  console.log(values);
-  values = values.slice(0, -1);
+  // let values = "";
+  // for (let i = 0; i < n; i++) {
+  //   values += `('${category[i]}','${food_name[i]}',${price[i]},'${description[i]}','${discount_percentage[i]}','${available[i]}','${restaurant_id[i]}'),`;
+  // }
 
-    const client = await connectDB();
-    const pgres = await client.query(`
-    INSERT INTO menu 
-    VALUES ${values}
-    `);
-    res.json(pgres.rows);
+ const client=await connectDB()
+  await client.query(`drop table  if exists menu`);
+  await client.query(
+    `create table  if not exists menu(id serial,
+        food_name varchar(100) not null,
+        category varchar(100) not null,
+        discount_percentage numeric(5,2) not null ,
+        price numeric not null,
+        available char(1) check (available in ('Y','N')),
+        restaurant_id int not null,
+        photo text)
+        `
+  );
 
-
-  
+  const { query, values } = await add_query(req.body, "menu");
+  await client.query(query, values);
+  res.json("menu added successfully");
 });
 
 const menu_display = async (req, res) => {
   //vendor must be send in url
   const {query}=req
-  let query_sql = `select * from (select * from menu where restaurant_id='vendor001') where 1=1`;//restaurant_id=sth
+  let query_sql = `select * from (select * from menu where restaurant_id=1) where 1=1`;//restaurant_id=sth
   try {
     const client = await connectDB();
     if ("category" in query) {
@@ -96,9 +93,10 @@ const menu_display = async (req, res) => {
     if ("sort" in query) {
       query_sql += ` ORDER BY ${query.sort}`;//front must use , as price desc,.. 
     }else {
-      query_sql += " ORDER BY order_last_7_days"; 
+      // query_sql += " ORDER BY order_last_7_days"; 
     }
     const pgres = await client.query(query_sql);
+   console.log(pgres.rows[0].price+1)
     res.json(pgres.rows);
   } catch (err) {
     res.json(err.message);

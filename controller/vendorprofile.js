@@ -1,7 +1,7 @@
-const { connectDB } = require("../../configurations/connectpg");
-const { add_query } = require("../../crud.js/add");
-const customError = require("../../functions/customerror");
-const { noTryCatch } = require("../../functions/notrycatch");
+const { connectDB } = require("../configurations/connectpg");
+const { add_query } = require("./add");
+const customError = require("../functions/customerror");
+const { noTryCatch } = require("../functions/notrycatch");
 
 
 const vendorprofileadd=noTryCatch(async(req,res)=>{

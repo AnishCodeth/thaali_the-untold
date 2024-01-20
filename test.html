@@ -1,71 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Person Details Form</title>
-  <!-- You can add additional styling here or link to a CSS file -->
-  <style>
-    /* Add your styles here */
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
-  <form id="personForm">
-    <h2>Enter Details for 3 People</h2>
-
-    <!-- Person 1 -->
-    <label for="person1Name">Name of Person 1:</label>
-    <input type="text" id="person1Name" name="name" required>
-    <br>
-    <label for="person1Photo">Photo of Person 1:</label>
-    <input type="file" id="person1Photo" name="image" accept="image/*" >
-    <br><br>
-
-    <!-- Person 2 -->
-    <label for="person2Name">Name of Person 2:</label>
-    <input type="text" id="person2Name" name="name" required>
-    <br>
-    <label for="person2Photo">Photo of Person 2:</label>
-    <input type="file" id="person2Photo" name="image" accept="image/*" >
-    <br><br>
-
-    <!-- Person 3 -->
-    <label for="person3Name">Name of Person 3:</label>
-    <input type="text" id="person3Name" name="name" required>
-    <br>
-    <label for="person3Photo">Photo of Person 3:</label>
-    <input type="file" id="person3Photo" name="image" accept="image/*" >
-    <br><br>
-
-    <button type="submit">Submit</button>
-  </form>
-
-  <script>
-    document.getElementById('personForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      // Get form data
-      const formData = new FormData(this);
-      const a=document.getElementById("person3Name").value
-      console.log(a)
-
-      // Make a POST request to your backend
-      fetch('http://localhost:5000/test/profile', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => {
-        if (response.ok) {
-          // Handle successful submission (e.g., show a success message)
-          console.log('Data sent successfully');
-        } else {
-          // Handle errors if the submission fails
-          console.error('Error sending data');
+    <form id="form">
+        <div>
+            <label for="Ntext">Name</label>
+            <input type="text" id="Ntext" value="Anish Subedi">
+        </div>
+        <div>
+           male <input type="checkbox" name="Gcheck" id="Gcheck1" value="Male" default>
+            female <input type="checkbox" name="Gcheck" id="Gcheck2" value="female">
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" value="anjg@gmail.com">
+        </div>
+        <input type="button" value="Submit" onclick="send()">
+    </form>
+    <script>
+        function send()
+        {
+            const form=document.getElementById("form")
+            const formData=new FormData(form);
+            console.log(formData)
         }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-    });
-  </script>
+    </script>
 </body>
 </html>

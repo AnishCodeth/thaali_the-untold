@@ -1,7 +1,7 @@
-const { connectDB } = require("../../configurations/connectpg");
-const { add_query } = require("../../crud.js/add");
-const customError = require("../../functions/customerror");
-const { noTryCatch } = require("../../functions/notrycatch");
+const { connectDB } = require("../configurations/connectpg");
+const { add_query } = require("./add");
+const customError = require("../functions/customerror");
+const { noTryCatch } = require("../functions/notrycatch");
 
 
 const getbill=noTryCatch(async(req,res)=>{
@@ -25,16 +25,16 @@ return res.json({restaurant_detail:pgresres.rows[0],"orders":pgresorder.rows,tot
 })
 
 const paymentadd=noTryCatch(async(req,res)=>{
-const restaurant_id='vendor'//will be get from qr code scan on decoding jwt
-const table_id='table1' //on decoding
-const client=await connectDB(restaurant_id);
-
-await client.query(`create table if not exists payment( table_id text not null,booking_id text not null,food_quantity text,phone_number bigint not null,payment_token text primary key,amount numeric,calculated_amount numeric,payment_time timestamp default LOCALTIMESTAMP)`)
-let pgres=await client.query(`SELECT STRING_AGG(CONCAT(order_data.food_name, '+', quantity, ','), '') AS food_quantity,sum(quantity*price) as total
-FROM order_data
+// const {b_id}=req.cookies;
+const b_id='book1'
+const client=await connectDB();
+await client.query(`create table if not exists payment( id serial,t_id int not null,b_id int not null,food_quantity text,phone_number bigint not null,transaction_id text,amount numeric,calculated_amount numeric,payment_time timestampz default current_time,payment_method varchaR(50) not null default 'khalti',description text,primary key(transaction_id,payment_method))`)
+let pgres=await client.query(`SELECT STRING_AGG(CONCAT(food_order.food_name, '*', quantity, ','), '') AS food_quantity,sum(quantity*price) as total
+FROM food_order
 join menu
-on order_data.food_name=menu.food_name
-WHERE booking_id = 'anish1';`)
+on food_order.food_name=menu.food_name
+WHERE b_id =$1;`,[b_id])
+
 let {food_quantity,total}=pgres.rows[0]
 req.body.food_quantity=food_quantity,
 req.body.calculated_amount=total;
@@ -43,7 +43,7 @@ console.log(food_quantity,total)
 const {query,values}=await add_query(req.body,'payment')
 console.log(query,values)
 await client.query(query,values)
-res.json({"token_id":req.body.payment_token});
+res.json({"msg":"payment stored!"});
 })
 
 
