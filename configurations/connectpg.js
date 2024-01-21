@@ -2,21 +2,22 @@
 require('dotenv').config()
 
 const {Pool}=require('pg')
-const poolConfig={
-  max:5,
-  min:2,
-  idleTimeoutMillis:600000
-}
 
-const userName= process.env.PGUSERNAME
-const host= process.env.PGHOST
-const database= process.env.PGDBNAME
-const password=process.env.PGPASSWORD
-const port= process.env.PGPORT
-
-poolConfig.connectionString=`postgres://${userName}:${password}@${host}:${port}/${database}`;
 
 const connectDB = async () => {
+  const poolConfig={
+    max:5,
+    min:2,
+    idleTimeoutMillis:600000
+  }
+  
+  const userName= process.env.PG_USERNAME
+  const host= process.env.PG_HOST
+  const database= process.env.PG_DATABASE
+  const password=process.env.PG_PASSWORD
+  const port= process.env.PG_PORT
+  
+  poolConfig.connectionString=`postgres://${userName}:${password}@${host}:${port}/${database}`;
   console.log(poolConfig)
 return new Pool(poolConfig)
 };
