@@ -13,7 +13,7 @@ app.use(cookieParser());
 //for the dotenv
 require('dotenv').config()
  //for routes
- app.use('test',(req,res)=>{
+ app.use('/test',(req,res)=>{
     res.json("hi ashish")
 })
 app.use('/',thaaliroute)
