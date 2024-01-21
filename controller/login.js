@@ -45,8 +45,8 @@ const registerController = noTryCatch(async (req, res, next) => {
                                            password ~ '[a-z]' AND
                                            password ~ '[^A-Za-z0-9]'),
     username varchar(100) primary key,
-    role varchar(8) check (role in  ('admin','customer','vendor'))
-    id serial ,
+    role varchar(8) check (role in  ('admin','customer','vendor')),
+    id serial 
 );`)
 
   let pgres = await client.query(
