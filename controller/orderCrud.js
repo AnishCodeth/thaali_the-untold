@@ -17,7 +17,7 @@ const add_order = noTryCatch(async (req, res) => {
         food_name varchar(100) not null,
         quantity int not null default 1 check (quantity>0) ,
         served char(1) default 'N' check (served in ('Y','N')),
-        o_time timestamptz  not null default current_time ,
+        o_time timestamptz  not null default current_timestamp ,
         description text)`
   );
 
