@@ -28,16 +28,19 @@ const production=(res,err)=>{
 
 const castErrorHandler=(err)=>{
 return new customError(`invalid value ${err.value} for field ${err.path}`,400)
-
 }
 
 const error_middleware=async(err,req,res,next)=>{
+console.log(err)
 if(process.env.NODE_ENV=='development'){
 development(res,err)
 }
 else if(process.env.NODE_ENV=='production'){
 if(err.name=='CastError'){//for the invalid id
     err=castErrorHandler(err)
+}
+else {
+   err= new customError(`${err.name}`,500)
 }
 production(res,err)
 }

@@ -1,11 +1,12 @@
 var nodemailer = require('nodemailer');
 const {google}=require('googleapis');
 const customError = require('./customerror');
+const { StatusCodes } = require('http-status-codes');
 
 const client_id='962289731781-co5fo5fslf29qvctgsdp2uab1ft06303.apps.googleusercontent.com'
 const client_secret='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'
 const redirect_uri='https://developers.google.com/oauthplayground'
-const refresh_Token='1//040rIUis-OTKQCgYIARAAGAQSNwF-L9IrXzCO3GRRHq9GvG-27dik1qQHygRDr9ZEOwLddPhWCV9eBFRl_XX5hXWt6CFdl9rYhCc'
+const refresh_Token='1//04nODabQghLhJCgYIARAAGAQSNwF-L9IrVPiIffbsqFxC_knW-57gHd9NfrkeYZtk0Y6G8fBHQoRZyFWjiMwUs5ueEl7oFIgLJFs'
 require('dotenv').config()
 
 // const emailVerification=async (gmail_id,code)=>{
@@ -71,7 +72,7 @@ const  mailOptions = {
        return result;
     }
     catch(error){
-        throw new customError(error)
+        throw new customError(500,error)
     }
 }
 
