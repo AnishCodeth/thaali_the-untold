@@ -17,7 +17,7 @@ const port= process.env.PGPORT
 poolConfig.connectionString=`postgres://${userName}:${password}@${host}:${port}/${database}`;
 
 const connectDB = async () => {
-  console.log(userName)
+  console.log(poolConfig)
 return new Pool(poolConfig)
 };
 
