@@ -11,7 +11,7 @@ const connectDB = async () => {
     idleTimeoutMillis:600000
   }
   
-  const userName= process.env.PG_USER
+  const userName= process.env.PG_USERNAME
   const host= process.env.PG_HOST
   const database= process.env.PG_DATABASE
   const password=process.env.PG_PASSWORD
