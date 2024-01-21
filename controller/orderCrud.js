@@ -18,7 +18,7 @@ const add_order = noTryCatch(async (req, res) => {
         quantity int not null default 1 check (quantity>0) ,
         served char(1) default 'N' check (served in ('Y','N')),
         o_time timestampz  not null default current_time ,
-        description text`
+        description text)`
   );
 
   req.body.b_id = b_id;
