@@ -33,9 +33,8 @@ const loginController = noTryCatch(async (req, res) => {
 
 const registerController = noTryCatch(async (req, res, next) => {
   //this is how user must send me data
-  let {role}=req.query;
-  role=role.toUpperCase();
-  const { email, password,username} = req.body;
+
+  const { email, password,username,role} = req.body;
 
   const client = await connectDB();
   await client.query(`CREATE TABLE IF NOT EXISTS ${role}_CREDENTIAL (
@@ -43,9 +42,11 @@ const registerController = noTryCatch(async (req, res, next) => {
     password VARCHAR(100) NOT NULL CHECK (LENGTH(password) >= 8 AND
                                            password ~ '[A-Z]' AND
                                            password ~ '[0-9]' AND
+                                           password ~ '[a-z]' AND
                                            password ~ '[^A-Za-z0-9]'),
-    username TEXT NOT NULL unique,
-    primary key(username,email)
+    username varchar(100) primary key,
+    role varchar(8) check (role in  ('admin','customer','vendor'))
+    id serial ,
 );`)
 
   let pgres = await client.query(
@@ -64,7 +65,10 @@ const registerController = noTryCatch(async (req, res, next) => {
   //errorc
   //this is the format i send to user on hitting submit in register page
   await sendmail(email, code, next);
-  res.cookie('email_token',token)
+  res.cookie('email_token',token,{
+    httpOnly:true,
+    secure:true
+  })
   return res.status(StatusCodes.OK).json({ token: token }); //remove code later
 });
 
