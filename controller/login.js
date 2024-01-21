@@ -5,7 +5,6 @@ const { StatusCodes } = require("http-status-codes");
 const { createcode } = require("../functions/createcode");
 const { createJWT, decodeJWT } = require("../functions/createJWT");
 const customError = require("../functions/customerror");
-const { HttpStatusCode } = require("axios");
 const { sendmail } = require("../functions/nodemailer");
 
 const loginController = noTryCatch(async (req, res) => {
