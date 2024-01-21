@@ -8,11 +8,11 @@ const poolConfig={
   idleTimeoutMillis:600000
 }
 
-const userName= process.env.PGUSERNAME
-const host= process.env.PGHOST
-const database= process.env.PGDBNAME
-const password=process.env.PGPASSWORD
-const port= process.env.PGPORT
+const userName= process.env.PG_USER
+const host= process.env.PG_HOST
+const database= process.env.PG_DATABASE
+const password=process.env.PG_PASSWORD
+const port= process.env.PG_PORT
 
 poolConfig.connectionString=`postgres://${userName}:${password}@${host}:${port}/${database}`;
 
