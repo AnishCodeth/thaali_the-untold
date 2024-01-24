@@ -3,7 +3,7 @@ const { connectDB, disconnectDB } = require("../configurations/connectpg");
 const { noTryCatch } = require("../functions/notrycatch");
 const { form_to_json } = require("../functions/form_json");
 const customError = require("../functions/customerror");
-const { add_query } = require("./add");
+const { add_query } = require("../crud query/add");
 
 const add_order = noTryCatch(async (req, res) => {
   const client = await connectDB();

@@ -2,32 +2,11 @@ const { photo_firebase_url } = require("../functions/firebasecrud");
 const { connectDB, disconnectDB } = require("../configurations/connectpg");
 const {noTryCatch}=require('../functions/notrycatch');
 const { form_to_json } = require("../functions/form_json");
-const { add_query } = require("./add");
+const { add_query } = require("../crud_query/add");
 
 
 const menu_add = noTryCatch(async (req, res) => {
-  //req.body must be array of the json
-  // let url = {};
-  // const n = req.body.food_name.length;
-  //for the images
-  // const n = req.files.length;
-  // const promises_url = [];
-  // for (let i = 0; i < n; i++) {
-  //   promises_url.push(
-  //     photo_firebase_url(
-  //       category[i],
-  //       food_name[i],
-  //       req.files[i].filename,
-  //       url,
-  //       i
-  //     )
-  //   );
-  // }
-  // await Promise.all(promises_url);
-  // let values = "";
-  // for (let i = 0; i < n; i++) {
-  //   values += `('${category[i]}','${food_name[i]}',${price[i]},'${description[i]}','${discount_percentage[i]}','${available[i]}','${restaurant_id[i]}'),`;
-  // }
+
 
  const client=await connectDB()
   await client.query(`drop table  if exists menu`);

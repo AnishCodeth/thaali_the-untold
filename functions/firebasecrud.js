@@ -4,10 +4,10 @@ const { getStorage, uploadBytesResumable,ref,getDownloadURL} =require("firebase/
 
 
 
-const photo_firebase_url=async(category,food_name,file_name,url,i)=>{
+const photo_firebase_url=async(url,filepath,i)=>{
 const storage=getStorage()
-const storageref=ref(storage,`photos/${category}/${food_name}`)
-const uploadTask=uploadBytesResumable(storageref,`../uploads/${file_name}`)
+const storageref=ref(storage,url)
+const uploadTask=uploadBytesResumable(storageref,filepath)
 
 return  new Promise((resolve,reject)=>{
   uploadTask.on('state_changed',
@@ -26,9 +26,9 @@ return  new Promise((resolve,reject)=>{
   }, 
   () => {
      getDownloadURL(uploadTask.snapshot.ref).then((downloadurl) => {
-      url[i]=downloadurl
-      console.log(i)
-      resolve(url[i])
+      // url[i]=downloadurl
+      // console.log(i)
+      resolve(downloadurl)
     });
   }
 );

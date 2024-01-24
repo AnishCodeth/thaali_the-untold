@@ -31,7 +31,7 @@ return new customError(`invalid value ${err.value} for field ${err.path}`,400)
 }
 
 const error_middleware=async(err,req,res,next)=>{
-console.log(err)
+console.log('inside the error',err)
 if(process.env.NODE_ENV=='development'){
 development(res,err)
 }
@@ -39,8 +39,17 @@ else if(process.env.NODE_ENV=='production'){
 if(err.name=='CastError'){//for the invalid id
     err=castErrorHandler(err)
 }
-else {
-   err= new customError(`${err.name}`,500)
+else if(err.code && err.code.startsWith('23')){
+    err= new customError(`${err.detail}`,500)
+}
+else if(err.name='TypeError')
+err=new customError(`${err}`,400)
+else if(err.isOperational){
+   
+}
+else
+{
+    err= new customError(`${err.name}`,500)
 }
 production(res,err)
 }
