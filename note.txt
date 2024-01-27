@@ -30,6 +30,6 @@ latitude numeric,
 longitude numeric  --will be in squared form
 )
 
-
+Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFuaWRoc3ViZWRpODIxQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiYW5pc2giLCJyb2xlIjoiY3VzdG9tZXIiLCJpYXQiOjE3MDYwNjI4MTUsImV4cCI6MTczNzYyMDQxNX0.PBZaIh_J-yxUdS6lpbzQrYCq5HfWEQ77DcbToKApUyU
 
 

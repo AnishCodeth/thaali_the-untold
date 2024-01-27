@@ -6,7 +6,7 @@ const { createcode } = require("../functions/createcode");
 const { createJWT, decodeJWT } = require("../functions/createJWT");
 const customError = require("../functions/customerror");
 const { sendmail } = require("../functions/nodemailer");
-const { add_query } = require("../crud query/add");
+const { add_query } = require("../crud_query/add");
 
 const roleRequestController = noTryCatch(async (req, res,next) => {
   //in req.body in auth middleware add this

@@ -1,4 +1,4 @@
-const display_query=async(where_conditions,order_conditions,queries)=>{
+const display_query=async(table_name,where_conditions,order_conditions,queries)=>{
 
     let values = [];
     let index=0;
@@ -29,7 +29,7 @@ const display_query=async(where_conditions,order_conditions,queries)=>{
     order_query=order_query==''?'':'order by '+order_query;
     values.push(offset);
     values.push(limit);
-    const query = `select * from FOOD_TABLE  ${where_query}  ${order_query} offset $${++index} limit $${++index}`;
+    const query = `select * from ${table_name}  ${where_query}  ${order_query} offset $${++index} limit $${++index}`;
     return {query,values}
     }
     

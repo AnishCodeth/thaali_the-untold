@@ -1,5 +1,5 @@
 const { connectDB } = require("../configurations/connectpg");
-const { add_query } = require("../crud query/add");
+const { add_query } = require("../crud_query/add");
 const customError = require("../functions/customerror");
 const { noTryCatch } = require("../functions/notrycatch");
 

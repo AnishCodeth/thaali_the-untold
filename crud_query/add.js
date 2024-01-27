@@ -2,7 +2,6 @@
 
 const add_query=async(payload,table_name)=>{
 let values=Object.values(payload);
-let index=0;
 const columns=Object.keys(payload).join(',');
 const values_params=values.map((_,index)=>`$${index+1}`).join(',');
 

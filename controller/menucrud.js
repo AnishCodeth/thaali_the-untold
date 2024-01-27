@@ -3,26 +3,30 @@ const { connectDB, disconnectDB } = require("../configurations/connectpg");
 const {noTryCatch}=require('../functions/notrycatch');
 const { form_to_json } = require("../functions/form_json");
 const { add_query } = require("../crud_query/add");
+const { update_query } = require("../crud_query/update");
+const customError = require("../functions/customerror");
+const { delete_query } = require("../crud_query/delete");
 
 
 const menu_add = noTryCatch(async (req, res) => {
-
-
+  req.body.r_username=req.user.username;
  const client=await connectDB()
-  await client.query(`drop table  if exists menu`);
+
   await client.query(
-    `create table  if not exists menu(id serial,
+    `create table  if not exists MENU(id serial,
         food_name varchar(100) not null,
         category varchar(100) not null,
-        discount_percentage numeric(5,2) not null ,
-        price numeric not null,
+        discount_percentage numeric(5,2) default 0 check(discount_percentage>=0) ,
+        price numeric not null check(price>0),
         available char(1) check (available in ('Y','N')),
-        restaurant_id int not null,
-        photo text)
+        r_username varchar(100) not null references PROFILE(username) on delete cascade,
+        description text,
+        photo text,
+        primary key(r_username,category,food_name))
         `
   );
-
-  const { query, values } = await add_query(req.body, "menu");
+  const { query, values } = await add_query(req.body, "MENU");
+  console.log(query,values)
   await client.query(query, values);
   res.json("menu added successfully");
 });
@@ -83,71 +87,34 @@ const menu_display = async (req, res) => {
   }
 };
 
-const menu_update=noTryCatch(async(req,res)=>{
-  //with json
-//user wll send   update: {"food_name":"burger","category":"chicken"},id: {"restaurant_id":"vendor001","Tiramisu"} in form_data
-//do photo for the later
-
-const to_update=await form_to_json(req.body)
-
-let query=''
-let where_query=`where restaurant_id=$1 and food_name=$2`
-let values=[to_update.id.restaurant_id, to_update.id.food_name];
-let index=3;
-//need to make middleware for the form data
-Object.keys(to_update.update).filter((filtered)=>{
-  query+=`${filtered}=$${index},`
-  values.push(to_update.update[filtered])
-  index++;
-})
-console.log(query)
-query=query.slice(0,-1)
-const client=await connectDB()
-const row=await client.query(`
-select food_name from menu ${where_query} `,values.slice(0,2))
-
-if(row.rows.length==0)
-return res.json('no such data found to update');
-
-query=`update menu
-set ${query}
-${where_query};`
-
-const pgres=await client.query(query,values)
-res.json(pgres.rows)
+const menu_update=noTryCatch(async(req,res,next)=>{
+  req.body.find.r_username=req.user.username
+  const where_conditions = ["r_username","id","discount_percentage","food_name","price","available","category"];//to ensure what what can they update
+  const set_conditions = ["discount_percentage","food_name","price","available","category"];
+  if(!req.body.set )
+  return next(new customError('provide what to update'))
+  const client=await connectDB()
+  const {query,values}=await update_query('MENU',set_conditions,where_conditions,req.body.set,req.body.find)
+  if(values.length==0)
+  return res.json({"msg":"already upto date"})
+  const pgres=await client.query(
+      query,values
+        );
+  res.json({"msg":"update successfull"})
 })
 
 const menu_delete=(async(req,res)=>{
-  //with json
-//user wll send   update: {"food_name":"burger","category":"chicken"},id: {"restaurant_id":"vendor001","Tiramisu"} in form_data
-//do photo for the later
-
-// const to_update=await form_to_json(req.body)
-
-let query=''
-let where_query=`where restaurant_id=$1 and food_name=$2`
-let values=[req.body.restaurant_id, req.body.food_name];
-// let index=3;
-//need to make middleware for the form data
-// Object.keys(to_update.update).filter((filtered)=>{
-//   query+=`${filtered}=$${index},`
-//   values.push(to_update.update[filtered])
-//   index++;
-// })
-// console.log(query)
-// query=query.slice(0,-1)
-const client=await connectDB()
-const row=await client.query(`
-select food_name from menu ${where_query} `,values)
-
-if(row.rows.length==0)
-return res.json('no such data found to delete');
-
-query=`delete from  menu
-${where_query};`
-
-const pgres=await client.query(query,values)
-res.json({'msg':'deleted successfully'})
+  req.body.r_username=req.user.username;
+  const where_conditions = ["r_username","id","discount_percentage","food_name","price","available","category"];
+  const delete_payload=req.body
+  const client=await connectDB()
+  const {query,values}=await delete_query('MENU',where_conditions,delete_payload)
+  const pgres=await client.query(
+      query,values
+        );
+  if(pgres.rowCount==0)
+  return res.json({"msg":"data not found!!"})
+  res.json({"msg":"delete successfull"})
 })
 
 module.exports = { menu_add, menu_display,menu_update,menu_delete };
