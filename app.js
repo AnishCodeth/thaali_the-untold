@@ -1,5 +1,5 @@
 const express=require('express')
-const { connectDB } = require("../configurations/connectpg");
+const { connectDB } = require("./configurations/connectpg.js");
 const app=express()
 const cookieParser=require('cookie-parser')
 const {error_middleware}=require('./middleware/error.js');
@@ -22,7 +22,7 @@ app.use('/vendor',vendorrouter)
 app.use('/customer',customerrouter)
 
 
-app.use('/delete', async (req, res) => {
+app.get('/delete', async (req, res) => {
     const pool=await connectDB();
     try {
       // Get a list of all tables
