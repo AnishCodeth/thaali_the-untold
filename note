@@ -1,0 +1,16 @@
+ await client.query(`CREATE OR REPLACE FUNCTION check_menu_food_r_username(r_username text) 
+  RETURNS TRIGGER AS $$
+  BEGIN
+      IF NOT EXISTS (
+          SELECT 1  FROM menu WHERE r_username = r_username AND food_name = NEW.food_name
+      ) THEN
+          RAISE EXCEPTION 'The specified food_name does not belong to the provided r_username.';
+      END IF;
+      RETURN NEW;
+  END;
+  $$ LANGUAGE plpgsql;
+  
+  CREATE TRIGGER trg_check_menu_food_r_username
+  BEFORE INSERT OR UPDATE ON food_order
+  FOR EACH ROW EXECUTE FUNCTION check_menu_food_r_username();
+  `)
