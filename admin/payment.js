@@ -18,6 +18,38 @@ const bill=noTryCatch(async(req,res)=>{
 return res.json({"orders":pgresorder.rows,total})
 })
 
+// const add_payment=noTryCatch(async(req,res)=>{
+//   const c_username=req.user.username;
+//   const r_username=req.book.r_username
+//   const b_id=req.book.id
+//   const client=await connectDB();
+//   await client.query(`create table if not exists payment( id serial primary key,
+//       r_username text not null references vendor_profile(username) on delete cascade,
+//       c_username text not null references customer_credential(username) on delete cascade,
+//       food_quantity text,
+//       phone_number bigint ,
+//       transaction_id text,
+//       amount numeric,
+//       calculated_amount numeric,
+//       payment_time timestamptz default current_timestamp,
+//       payment_method varchar(50) not null default 'khalti',
+//       description text)`)
+  
+//   let food_quantity=''
+//   let calculated_amount=0
+//   let pgres=(await client.query(`select menu.food_name,menu.price,food_order.quantity from food_order join menu on food_order.m_id=menu.id where food_order.b_id=$1`,[b_id])).rows
+  
+//   pgres.forEach((row)=>{
+//   food_quantity+=row.food_name+'_'+row.quantity+',';
+//   calculated_amount+=row.quantity*row.price
+//   })
+//   console.log(food_quantity,calculated_amount)
+//   const {query,values}=await add_query({...req.body,c_username,r_username,food_quantity,calculated_amount},'payment')
+//   console.log(query,values)
+//   await client.query(query,values)
+//   res.json({"msg":"payment stored!"});
+//   })
+
 
 const display_payment=noTryCatch(async(req,res)=>{
     const where_conditions = ["id","c_username","transaction_id",'payment_time','payment_method',"r_username"];

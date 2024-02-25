@@ -29,12 +29,12 @@ const profile_menu="profile"
   
   for (let i = 0; i < n; i++) {
     let file=req.files[i]
-    url=url+`/`+file.filename//path withinn storage
+    let urls=url+`/`+file.filename//path withinn storage
     let filepath='../uploads/'+file.filename//within the computer
-    console.log(url)
+    console.log(urls)
     promises_url.push(
       photo_firebase_url(
-        url,
+        urls,
         filepath
         )
         );
