@@ -12,7 +12,7 @@ const router = express.Router()
 
 
 router.use((req, res, next) => {
-    const paths=['/login','/register','/resetpassword','resetpasswordController']
+    const paths=['/login','/register','/resetpassword','resetpasswordController','/verifyemail']
     if (req.path === '/login' || req.path === '/register') {
       next(); // Skip authorization for login and register routes
     } else {

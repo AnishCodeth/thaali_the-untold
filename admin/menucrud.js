@@ -59,7 +59,7 @@ const update_menu=noTryCatch(async(req,res,next)=>{
 
 const delete_menu=noTryCatch((async(req,res,next)=>{
   const where_conditions = ["r_username","id","discount_percentage","food_name","price","available","category"];
-  if(req.body)
+  if(Object.keys(req.body).length==0)
   return next(new customError('provide what to delete',400))
 
   const delete_payload=req.body
