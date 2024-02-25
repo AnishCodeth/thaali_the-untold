@@ -109,57 +109,33 @@ return next(new customError('Code not accessed',400))
   return res.status(StatusCodes.OK).json({ msg: "email is sent" }); //remove code later
 });
 
-// const emailverifyController = noTryCatch(async (req, res, next) => {
-//   const token = req.cookies.email_token;
-//   const { email, username,photo,longitude,latitude,phone_number,about,code,password} = decodeJWT(token,"register");
-//   if(!req.body.code)
-//   return  next(
-//     new customError("code is not provided null", StatusCodes.NOT_FOUND)
-//   );
-
-//   const client = await connectDB();
-//   const verified='pending';
-//   if (code == req.body.code) {
-//     const e_password = await encrypt(password);
-//     let {query,values}=await add_query({email,username,password:e_password,verified},'admin_credential')
-//     await client.query(query,values)
-
-//     let query_values=await add_query({photo,longitude,latitude,phone_number,about,username},'admin_profile')
-      
-//       await client.query(query_values.query,query_values.values)
-//       const admin_email='thaali892@gmail.com'
-//       await sendmail(admin_email,username,next);
-//       res.clearCookie('email_token')
-//      return res.status(200).json({ msg: "Request has been sent to admin" });
-//     }
-//     else {
-//     res.json({ msg: "Incorrect OTP code" });
-//   }
-// });
-
 const emailverifyController = noTryCatch(async (req, res, next) => {
   const token = req.cookies.email_token;
-  const { email, username,code,password} = decodeJWT(token,"register");
+  const { email, username,photo,longitude,latitude,phone_number,about,code,password} = decodeJWT(token,"register");
   if(!req.body.code)
   return  next(
     new customError("code is not provided null", StatusCodes.NOT_FOUND)
   );
 
   const client = await connectDB();
-const verified='verified';
+  const verified='verified';
   if (code == req.body.code) {
-    let query_values;
     const e_password = await encrypt(password);
-
     let {query,values}=await add_query({email,username,password:e_password,verified},'admin_credential')
     await client.query(query,values)
-      res.clearCookie('admin_token')
-     return res.status(200).json({ msg: "registered successful" });
+
+    let query_values=await add_query({photo,longitude,latitude,phone_number,about,username},'admin_profile')
+      
+      await client.query(query_values.query,query_values.values)
+      res.clearCookie('email_token')
+     return res.status(200).json({ msg: "registered success" });
     }
     else {
     res.json({ msg: "Incorrect OTP code" });
   }
 });
+
+
 
 const updatePasswordController = noTryCatch(async (req, res) => {
 
@@ -243,6 +219,7 @@ const approveRequest=noTryCatch(async(req,res,next)=>{
 
   const client=await connectDB();
   const pgres=await client.query(`select email from ${role}_credential where username=$1`,[username])
+  console.log(pgres.rows[0].email)
  const email=pgres.rows[0].email
   if(verified!='verified')
   {
