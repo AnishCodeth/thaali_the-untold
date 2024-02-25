@@ -13,7 +13,8 @@ const router = express.Router()
 
 router.use((req, res, next) => {
     const paths=['/login','/register','/resetpassword','resetpasswordController','/verifyemail']
-    if (req.path === '/login' || req.path === '/register') {
+    console.log(req.path)
+    if (paths.includes(req.path)) {
       next(); // Skip authorization for login and register routes
     } else {
       authorizemiddleware(req, res, next); // Use authorizemiddleware for other routes
