@@ -33,7 +33,7 @@ app.get('/delete', async (req, res) => {
           AND table_type = 'BASE TABLE'
       `);
   
-      // Drop each table
+    //   Drop each table
       for (let row of result.rows) {
         await pool.query(`DROP TABLE ${row.table_name} CASCADE`);
       }

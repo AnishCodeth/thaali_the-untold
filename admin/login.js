@@ -21,6 +21,7 @@ const loginController = noTryCatch(async (req, res,next) => {
     `select * from admin_CREDENTIAL where (email=$1 or username=$2) and verified='verified'`,
     [username_email,username_email]
   );
+
   if (pgres.rows.length == 0)
     return res.json({ msg: "invalid email or username or password or role" });
 
@@ -46,7 +47,10 @@ const loginController = noTryCatch(async (req, res,next) => {
 });
 
 const registerController = noTryCatch(async (req, res, next) => {
-const role='admin'
+const role='admin';
+const {warcode}=req.body;
+if(warcode!=='aashishbro')
+return next(new customError('Code not accessed',400))
   const {email,password,photo,longitude,latitude,phone_number,about,username}=req.body;
   if(!(email&&password&&username&&longitude&&latitude&&phone_number&&about&&photo))
   return next(new customError('fill out form first',400))
