@@ -8,8 +8,7 @@ const { delete_query } = require("../crud_query/delete");
 const { display_query } = require("../crud_query/display");
 
 
-const add_menu = noTryCatch(async (req, res) => {
-  req.body.r_username=req.user.username;
+const add_menu = noTryCatch(async (req, res,next) => {
  const client=await connectDB()
 
   await client.query(
@@ -32,13 +31,11 @@ const add_menu = noTryCatch(async (req, res) => {
   res.json("menu added successfully");
 });
 
-const display_menu = noTryCatch( async (req, res) => {
-  const where_conditions = ["food_name","category","price","id","r_username","discount_percentage","count"];
-  const order_conditions = ["food_name","category","price","id","r_username","discount_percentage","count"];
-  req.query.r_username=req.user.username
+const display_menu = noTryCatch( async (req, res,next) => {
+  const where_conditions = ["food_name","category","price","id","r_username","discount_percentage","count","r_username"];
+  const order_conditions = ["food_name","category","price","id","r_username","discount_percentage","count","r_username"];
   const {query,values}=await display_query('menu',where_conditions,order_conditions,req.query)
   const client = await connectDB();
-  console.log(query,values)
   const pgres = await client.query(
 query,values
   );
@@ -46,10 +43,9 @@ query,values
 });
 
 const update_menu=noTryCatch(async(req,res,next)=>{
-  req.body.find.r_username=req.user.username
   const where_conditions = ["r_username","id","discount_percentage","food_name","price","available","category"];//to ensure what what can they update
   const set_conditions = ["discount_percentage","food_name","price","available","category"];
-  if(!req.body.set )
+  if(!req.body.set || !req.body.find)
   return next(new customError('provide what to update'))
   const client=await connectDB()
   const {query,values}=await update_query('MENU',set_conditions,where_conditions,req.body.set,req.body.find)
@@ -61,9 +57,11 @@ const update_menu=noTryCatch(async(req,res,next)=>{
   res.json({"msg":"update successfull"})
 })
 
-const delete_menu=noTryCatch((async(req,res)=>{
-  req.body.r_username=req.user.username;
+const delete_menu=noTryCatch((async(req,res,next)=>{
   const where_conditions = ["r_username","id","discount_percentage","food_name","price","available","category"];
+  if(req.body)
+  return next(new customError('provide what to delete',400))
+
   const delete_payload=req.body
   const client=await connectDB()
   const {query,values}=await delete_query('MENU',where_conditions,delete_payload)
