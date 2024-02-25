@@ -7,7 +7,7 @@ const customError = require("../functions/customerror");
 const { noTryCatch } = require("../functions/notrycatch");
 
 const delete_book=noTryCatch((async(req,res)=>{
-    const where_conditions = ["id"];
+    const where_conditions = ["id",];
     const {b_id:id}=req.body;
     const client=await connectDB()
     const {query,values}=await delete_query('book_status',where_conditions,{id})

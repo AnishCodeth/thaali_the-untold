@@ -91,7 +91,7 @@ const role='vendor'
       new customError("Email is already used or send for request", StatusCodes.NOT_FOUND)
     );
 
-
+  console.log(process.env.JWT_REGISTER)
   const code = createcode();
   const token = createJWT({...req.body,code}, {
     expiresIn: 60 * 60,
