@@ -30,6 +30,7 @@ const display_query=async(table_name,where_conditions,order_conditions,queries)=
       .join(" AND ");
       where_query=where_query==''?'':' where '+where_query;
     
+      console.log(queries.sort)
     let order_query =queries.sort?queries.sort.split(",").filter((f) =>{ 
       const val=f.split(' ')
      

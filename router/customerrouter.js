@@ -9,6 +9,7 @@ const { display_menu } = require('../customer/menucrud')
 const { add_order, display_order } = require('../customer/ordercrud')
 const { add_payment, display_payment } = require('../customer/payment')
 const { add_review, display_review, update_review, delete_review } = require('../customer/review')
+const { menu_db } = require('../common/dashboard')
 const router = express.Router()
 
 router.route('/register').post(registerController)
@@ -32,4 +33,6 @@ router.route('/order').post(authorizemiddleware,bookAuthorizeMiddleware,add_orde
 router.route('/payment').post(authorizemiddleware,bookAuthorizeMiddleware,add_payment).get(authorizemiddleware,bookAuthorizeMiddleware,display_payment)
 //review
 router.route('/review').post(authorizemiddleware,add_review).get(authorizemiddleware,display_review).patch(authorizemiddleware,update_review).delete(authorizemiddleware,delete_review)
+//commom
+router.route('/common/menu').get(authorizemiddleware,bookAuthorizeMiddleware,menu_db)
 module.exports=router;
