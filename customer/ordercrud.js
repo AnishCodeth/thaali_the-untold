@@ -29,7 +29,7 @@ const add_order = noTryCatch(async (req, res) => {
       id SERIAL PRIMARY KEY,
       b_id INT NOT NULL REFERENCES book_status(id) ON DELETE CASCADE,
       m_id INT NOT NULL REFERENCES menu(id) ,
-      quantity INT DEFAULT 1 CHECK (quantity >= 0),
+      quantity INT not null DEFAULT 1 CHECK (quantity >= 0),
       served CHAR(1) DEFAULT 'N' CHECK (served IN ('Y', 'N')),
       o_time TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
       r_username text not null references vendor_profile(username),

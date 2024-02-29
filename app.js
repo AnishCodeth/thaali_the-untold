@@ -45,6 +45,11 @@ app.get('/delete', async (req, res) => {
     }
   });
 
+  app.get('/connection',async(req,res,next)=>{
+    const client=await connectDB()
+    res.json(await client.query('SELECT * FROM pg_stat_activity'))
+  })
+
   app.use('/',async (req,res)=>{
     return res.status(404).json('not found')
 })
