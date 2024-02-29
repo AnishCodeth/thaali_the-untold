@@ -37,9 +37,14 @@ const add_order = noTryCatch(async (req, res) => {
   )
 `);
 
+const promises=[]
+for (let i=0;i<req.body.length;i++){
+  let {m_id,quantity,served,description}=req.body[i]
   let { query, values } = await add_query({m_id,quantity,served,description,b_id,r_username}, "food_order");
-  await client.query(query, values);
-await client.query(`update menu set count=count+$2 where id=$1`,[m_id,quantity])
+  promises.push(client.query(query, values));
+  promises.push(client.query(`update menu set count=count+$2 where id=$1`,[m_id,quantity]))
+}
+await Promise.all(promises)
   return res.json("order added successfully");
 });
 
