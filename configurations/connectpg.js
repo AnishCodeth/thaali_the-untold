@@ -4,7 +4,9 @@ require('dotenv').config()
 const {Pool}=require('pg')
 
 
+let pool=null;
 const connectDB = async () => {
+  if(!pool){
   const poolConfig={
     max:5,
     min:2,
@@ -18,7 +20,9 @@ const connectDB = async () => {
   const port= process.env.PG_PORT
   
   poolConfig.connectionString=`postgres://${userName}:${password}@${host}:${port}/${database}`;
-return new Pool(poolConfig)
+  pool=new Pool(poolConfig)
+}
+return pool;
 };
 
 const disconnectDB = async () => {
