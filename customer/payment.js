@@ -13,7 +13,7 @@ const bill=noTryCatch(async(req,res)=>{
     let pgres=(await client.query(`select menu.food_name,menu.price,food_order.quantity from food_order join menu on food_order.m_id=menu.id where food_order.b_id=$1`,[b_id])).rows
     
     pgres.forEach((row)=>{
-    food_quantity+=row.food_name+'_'+row.quantity+',';
+    food_quantity+=row.food_name+'_'+row.quantity+'_'+row.price+',';
     calculated_amount+=row.quantity*row.price
     })
 return res.json({"orders":food_quantity,total:calculated_amount})
