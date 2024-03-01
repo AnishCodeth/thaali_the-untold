@@ -9,6 +9,7 @@ const bill=noTryCatch(async(req,res)=>{
     let food_quantity=''
     let calculated_amount=0
     const b_id=req.book.id;
+    const client=await connectDB();
     let pgres=(await client.query(`select menu.food_name,menu.price,food_order.quantity from food_order join menu on food_order.m_id=menu.id where food_order.b_id=$1`,[b_id])).rows
     
     pgres.forEach((row)=>{
