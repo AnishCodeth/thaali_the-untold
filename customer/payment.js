@@ -16,7 +16,7 @@ const bill=noTryCatch(async(req,res)=>{
     food_quantity+=row.food_name+'_'+row.quantity+',';
     calculated_amount+=row.quantity*row.price
     })
-return res.json({"orders":pgresorder.rows,total})
+return res.json({"orders":food_quantity,total:calculated_amount})
 })
 
 const add_payment=noTryCatch(async(req,res)=>{
