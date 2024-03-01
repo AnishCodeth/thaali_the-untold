@@ -33,6 +33,8 @@ router.route('/order').post(authorizemiddleware,bookAuthorizeMiddleware,add_orde
 router.route('/payment').post(authorizemiddleware,bookAuthorizeMiddleware,add_payment).get(authorizemiddleware,bookAuthorizeMiddleware,display_payment)
 //review
 router.route('/review').post(authorizemiddleware,add_review).get(authorizemiddleware,display_review).patch(authorizemiddleware,update_review).delete(authorizemiddleware,delete_review)
+//bill
+router.route('/bill').get(authorizemiddleware,bookAuthorizeMiddleware,display_review)
 //commom
 router.route('/common/menu').get(authorizemiddleware,bookAuthorizeMiddleware,menu_db)
 module.exports=router;

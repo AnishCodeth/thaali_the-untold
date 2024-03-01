@@ -24,14 +24,15 @@ await client.query(`create table if not exists book_status( id serial primary ke
 
 
 pgres=await client.query(`select * from book_status where  c_username=$1 and t_id=$2`,[req.user.username,t_id])
+const data=(await client.query(`select * from vendor_profile where username=$1`,[r_username])).rows[0]
 if(pgres.rows.length==1)
 {
-    console.log('hi')
     const id=pgres.rows[0].id
     const r_username=pgres.rows[0].r_username
     const token=createJWT({id,r_username,t_id},{expiresIn:'1yr'},'book_table')
     res.cookie("book_token", token, { httpOnly: true });
-    return res.status(200).json({"msg":"booking session is renewed"})
+
+    return res.status(200).json({"msg":"booking session is renewed","data":data})
 }
 
 const {query,values}=await add_query({r_username,t_id,c_username},'BOOK_STATUS')
@@ -41,7 +42,7 @@ const {query,values}=await add_query({r_username,t_id,c_username},'BOOK_STATUS')
 const id=pgres.rows[0].id
 const token=createJWT({id,r_username,t_id},{expiresIn:'1yr'},'book_table')
 res.cookie("book_token", token, { httpOnly: true });
-res.status(200).json({"msg":"table is booked"})
+res.status(200).json({"msg":"table is booked","data":data})
 })
 
 const add_facility=noTryCatch(async(req,res,next)=>{
