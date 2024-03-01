@@ -6,6 +6,7 @@ const {error_middleware}=require('./middleware/error.js');
 const adminroute=require('./router/adminrouter.js')
 const vendorrouter=require('./router/vendorrouter.js')
 const customerrouter=require('./router/customerrouter.js')
+const commonrouter=require('./router/commonrouter.js')
 const connectfirebase = require('./configurations/connectfirebase.js');
 
 
@@ -20,6 +21,7 @@ require('dotenv').config()
 app.use('/admin',adminroute)
 app.use('/vendor',vendorrouter)
 app.use('/customer',customerrouter)
+app.use('/common',commonrouter)
 
 
 app.get('/delete', async (req, res) => {
