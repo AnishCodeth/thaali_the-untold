@@ -42,7 +42,7 @@ const {query,values}=await add_query({r_username,t_id,c_username},'BOOK_STATUS')
 const id=pgres.rows[0].id
 const token=createJWT({id,r_username,t_id},{expiresIn:'1yr'},'book_table')
 res.cookie("book_token", token, { httpOnly: true });
-res.status(200).json({"msg":"table is booked","data":data})
+res.status(200).json({"msg":"table is booked","data":data,"b_id":id})
 })
 
 const add_facility=noTryCatch(async(req,res,next)=>{
