@@ -11,13 +11,18 @@ const display_order = noTryCatch(async (req, res) => {
   const where_conditions = ["b_id",'r_username'];
   const order_conditions = ['o_time',"quantity"];
   req.query.r_username=req.user.username
-  const {query,values}=await display_query('food_order',where_conditions,order_conditions,req.query)
   const client = await connectDB();
+  let b_id;
+  if(req.query.t_id){
+ b_id=(await client.query(`select * from food_order inner join book_status on food_order.b_id=book_status.id where book_status.t_id=$1`,[req.query.t_id])).rows[0].b_id
+ req.query.b_id=b_id;
+  }
+  const {query,values}=await display_query('food_order',where_conditions,order_conditions,req.query)
+
   const pgres = await client.query(
 query,values
   );
   return res.json(pgres.rows);
-
 });
 
 const delete_order=noTryCatch((async(req,res)=>{
