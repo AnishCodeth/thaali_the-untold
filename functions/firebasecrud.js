@@ -2,12 +2,16 @@ const { initializeApp}=require("firebase/app");
 const { getStorage, uploadBytesResumable,ref,getDownloadURL} =require("firebase/storage");
 
 
-
+const metadata = {
+  contentType: 'image/jpeg'
+};
 
 const photo_firebase_url=async(url,filepath,i)=>{
 const storage=getStorage()
 const storageref=ref(storage,url)
-const uploadTask=uploadBytesResumable(storageref,filepath)
+const uploadTask=uploadBytesResumable(storageref,filepath,metadata)
+
+
 
 return  new Promise((resolve,reject)=>{
   uploadTask.on('state_changed',
@@ -25,9 +29,9 @@ return  new Promise((resolve,reject)=>{
     reject(error)
   }, 
   () => {
-     getDownloadURL(uploadTask.snapshot.ref).then((downloadurl) => {
-      // url[i]=downloadurl
-      // console.log(i)
+    getDownloadURL(uploadTask.snapshot.ref).then((downloadurl) => {
+      url[i]=downloadurl
+      console.log(i)
       resolve(downloadurl)
     });
   }
