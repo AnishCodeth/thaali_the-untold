@@ -37,4 +37,6 @@ router.route('/review').post(authorizemiddleware,add_review).get(authorizemiddle
 router.route('/bill').get(authorizemiddleware,bookAuthorizeMiddleware,bill)
 //commom
 router.route('/common/menu').get(authorizemiddleware,bookAuthorizeMiddleware,menu_db)
+//photo
+router.route('/photo').post(authorizemiddleware,upload().array('image',),image_url)
 module.exports=router;
