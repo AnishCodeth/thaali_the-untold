@@ -10,6 +10,8 @@ const { add_order, display_order } = require('../customer/ordercrud')
 const { add_payment, display_payment, bill } = require('../customer/payment')
 const { add_review, display_review, update_review, delete_review } = require('../customer/review')
 const { menu_db } = require('../common/dashboard')
+const { image_url } = require('../functions/photourl')
+const { upload } = require('../functions/photomulter')
 const router = express.Router()
 
 router.route('/register').post(registerController)
