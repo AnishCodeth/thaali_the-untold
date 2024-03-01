@@ -7,7 +7,7 @@ const { add_profile_photo, update_profile_photo } = require('../common/profile_p
 const { add_book, add_facility } = require('../customer/book')
 const { display_menu } = require('../customer/menucrud')
 const { add_order, display_order } = require('../customer/ordercrud')
-const { add_payment, display_payment } = require('../customer/payment')
+const { add_payment, display_payment, bill } = require('../customer/payment')
 const { add_review, display_review, update_review, delete_review } = require('../customer/review')
 const { menu_db } = require('../common/dashboard')
 const router = express.Router()
@@ -34,7 +34,7 @@ router.route('/payment').post(authorizemiddleware,bookAuthorizeMiddleware,add_pa
 //review
 router.route('/review').post(authorizemiddleware,add_review).get(authorizemiddleware,display_review).patch(authorizemiddleware,update_review).delete(authorizemiddleware,delete_review)
 //bill
-router.route('/bill').get(authorizemiddleware,bookAuthorizeMiddleware,display_review)
+router.route('/bill').get(authorizemiddleware,bookAuthorizeMiddleware,bill)
 //commom
 router.route('/common/menu').get(authorizemiddleware,bookAuthorizeMiddleware,menu_db)
 module.exports=router;
