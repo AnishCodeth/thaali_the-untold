@@ -7,7 +7,7 @@ const allvendordata=noTryCatch(async(req,res,next)=>{
     const where_conditions = ['username','id'];
     const order_conditions=['username','id','longitude','latitude']
     const role='vendor';
-    const {query,values}=await display_query(role+'_profile',where_conditions,order_conditions,req.body)
+    const {query,values}=await display_query(role+'_profile',where_conditions,order_conditions,req.query)
     const client = await connectDB();
     const pgres = await client.query(
   query,values
