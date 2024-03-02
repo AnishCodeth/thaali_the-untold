@@ -39,7 +39,7 @@ let {longitude,latitude,radius}=req.body;
 radius=180/6371*radius;
 console.log(longitude-radius,latitude)
 let pgres=(await client.query(`select * from vendor_profile where longitude<$1 and latitude<$2 and longitude>$3 and latitude>$4`,[longitude+radius,latitude+radius,longitude-radius,latitude-radius])).rows
-pgres.sort((row1,row2)=>getDistanceFromLatLonInKm(row1.longitude,row2.latitude,longitude,latitude)-getDistanceFromLatLonInKm(row1.longitude,row2.latitude,longitude,latitude))
+pgres=pgres.sort((row1,row2)=>getDistanceFromLatLonInKm(row1.latitude,row1.longitude,latitude,longitude)-getDistanceFromLatLonInKm(row2.latitude,row2.longitude,latitude,longitude))
 res.status(200).json(pgres)
 })
 
