@@ -8,8 +8,5 @@ const pgres=await client.query(`select distinct on (category) * from menu where 
 res.status(200).json(pgres.rows)
 })
 
-const nearby=noTryCatch(async(req,res,next)=>{
-
-})
 
 module.exports={menu_db}

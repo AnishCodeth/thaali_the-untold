@@ -8,7 +8,6 @@ const path=require('path')
 
 const image_url=noTryCatch(async(req,res,next)=>{
   const {role,username}=req.user
-  console.log(req.files)
   if(!req.files)
   return next(new customError("provide file",400))
   const n = req.files.length;
@@ -30,15 +29,17 @@ const profile_menu="profile"
   for (let i = 0; i < n; i++) {
     let file=req.files[i]
     let urls=url+`/`+file.filename//path withinn storage
-    let filepath='../uploads/'+file.filename//within the computer
-    console.log(urls)
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      const fileExtension = file.originalname.split('.').pop();
+      file.filename=uniqueSuffix + '.' + fileExtension
+    let filepath=path.join(__dirname,'../uploads/'+file.filename)//within the computer
     promises_url.push(
       photo_firebase_url(
         urls,
-        filepath
+        filepath,i,file
         )
         );
-        fs.unlinkSync(path.join(__dirname,filepath))
+        // fs.unlinkSync(filepath)
       }
       const firebasepath= await Promise.all(promises_url);
       

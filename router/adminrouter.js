@@ -6,6 +6,8 @@ const { authorizemiddleware } = require("../admin/authorizemiddlware");
 const { add_facility, display_book, delete_book } = require("../admin/book");
 const { add_menu, display_menu, update_menu, delete_menu } = require("../admin/menucrud");
 const { image_url } = require("../functions/photourl");
+const { route } = require("./vendorrouter");
+const { display_profile } = require("../admin/profile");
 
 const router = express.Router()
 
@@ -36,4 +38,6 @@ router.use((req, res, next) => {
 router.route('/menu').post(add_menu).get(display_menu).patch(update_menu).delete(delete_menu)
 //photo
 router.route('/photo').post(authorizemiddleware,upload().array('image',),image_url)
+//profile
+router.route('/profile').get(authorizemiddleware,display_profile)
 module.exports=router;

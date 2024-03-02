@@ -2,20 +2,21 @@ const { initializeApp}=require("firebase/app");
 const { getStorage, uploadBytesResumable,ref,getDownloadURL} =require("firebase/storage");
 
 
-const metadata = {
-  contentType: 'image/jpeg'
-};
 
-const photo_firebase_url=async(url,filepath,i)=>{
+
+const photo_firebase_url=async(url,filepath,i,file)=>{
+
+  const metadata = {
+    contentType: file.mimetype
+  };
 const storage=getStorage()
 const storageref=ref(storage,url)
-const uploadTask=uploadBytesResumable(storageref,filepath,metadata)
-
-
-
+const uploadTask=uploadBytesResumable(storageref,file.buffer,metadata)
 return  new Promise((resolve,reject)=>{
   uploadTask.on('state_changed',
   (snapshot) => {
+    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    console.log('Upload is ' + progress + '% done');
     switch (snapshot.state) {
       case 'paused':
         console.log('Upload is paused');

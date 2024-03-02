@@ -12,6 +12,7 @@ const { add_review, display_review, update_review, delete_review } = require('..
 const { menu_db } = require('../common/dashboard')
 const { image_url } = require('../functions/photourl')
 const { upload } = require('../functions/photomulter')
+const { nearby } = require('../common/mapreview')
 const router = express.Router()
 
 router.route('/register').post(registerController)
@@ -41,4 +42,6 @@ router.route('/bill').get(authorizemiddleware,bookAuthorizeMiddleware,bill)
 router.route('/common/menu').get(authorizemiddleware,bookAuthorizeMiddleware,menu_db)
 //photo
 router.route('/photo').post(authorizemiddleware,upload().array('image',),image_url)
+//nearby
+router.route('/nearby').get(authorizemiddleware,nearby)
 module.exports=router;
