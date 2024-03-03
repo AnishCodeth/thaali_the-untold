@@ -43,5 +43,5 @@ router.route('/common/menu').get(authorizemiddleware,bookAuthorizeMiddleware,men
 //photo
 router.route('/photo').post(authorizemiddleware,upload().array('image',),image_url)
 //nearby
-router.route('/nearby').get(authorizemiddleware,nearby)
+router.route('/nearby').get(nearby)
 module.exports=router;
