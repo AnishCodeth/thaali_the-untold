@@ -35,7 +35,7 @@ router.route('/order').post(authorizemiddleware,bookAuthorizeMiddleware,add_orde
 //payment
 router.route('/payment').post(authorizemiddleware,bookAuthorizeMiddleware,add_payment).get(authorizemiddleware,bookAuthorizeMiddleware,display_payment)
 //review
-router.route('/review').post(authorizemiddleware,add_review).get(authorizemiddleware,display_review).patch(authorizemiddleware,update_review).delete(authorizemiddleware,delete_review)
+router.route('/review').post(authorizemiddleware,add_review).get(display_review).patch(authorizemiddleware,update_review).delete(authorizemiddleware,delete_review)
 //bill
 router.route('/bill').get(authorizemiddleware,bookAuthorizeMiddleware,bill)
 //commom
@@ -43,5 +43,5 @@ router.route('/common/menu').get(authorizemiddleware,bookAuthorizeMiddleware,men
 //photo
 router.route('/photo').post(authorizemiddleware,upload().array('image',),image_url)
 //nearby
-router.route('/nearby').get(nearby)
+router.route('/nearby').post(nearby)
 module.exports=router;
