@@ -29,12 +29,12 @@ const image_url=noTryCatch(async(req,res,next)=>{
   }
   
   for (let i = 0; i < n; i++) {
-    let file=req.files[i]
-    let urls=url+`/`+file.filename//path withinn storage
+    let file=req.files[i]//path withinn storage
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
       const fileExtension = file.originalname.split('.').pop();
       file.filename=uniqueSuffix + '.' + fileExtension
     let filepath=path.join(__dirname,'../uploads/'+file.filename)//within the computer
+    let urls=url+`/`+file.filename
     promises_url.push(
       photo_firebase_url(
         urls,
