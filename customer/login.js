@@ -191,8 +191,6 @@ const resetpasswordController = noTryCatch(async (req, res) => {
   }
 });
 
-
-
 module.exports = {
   registerController,
   emailverifyController,
