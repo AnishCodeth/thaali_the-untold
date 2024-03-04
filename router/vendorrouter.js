@@ -11,7 +11,7 @@ const { display_order, delete_order } = require("../vendor/ordercrud");
 const { display_payment } = require("../vendor/payment");
 const { delete_book, display_book } = require("../vendor/book");
 const { display_review } = require("../vendor/review");
-const { image_url } = require("../functions/photourl");
+const { image_url, image_url_vendor_profile } = require("../functions/photourl");
 
 const router = express.Router()
 
@@ -38,4 +38,6 @@ router.route('/book').delete(authorizemiddleware,delete_book).get(authorizemiddl
 router.route('/review').get(display_review)
 //photo
 router.route('/photo').post(authorizemiddleware,upload().array('image',),image_url)
+//photoprofile
+router.route('/photo_profile').post(upload().array('image',),image_url_vendor_profile)
 module.exports=router;
