@@ -8,6 +8,7 @@ const { add_menu, display_menu, update_menu, delete_menu } = require("../admin/m
 const { image_url } = require("../functions/photourl");
 const { route } = require("./vendorrouter");
 const { display_profile } = require("../admin/profile");
+const { pendingRequest } = require("../admin/approveshow");
 
 const router = express.Router()
 
@@ -30,7 +31,7 @@ router.use((req, res, next) => {
   router.route('/login').post(loginController)
   router.route('/updatepassword').patch(updatePasswordController)
   router.route('/resetpassword').get(requestresetpasswordController).post(resetpasswordController)
-  router.route('/approverequest').post(approveRequest)
+  router.route('/approverequest').post(approveRequest).get(pendingRequest)
   
   //book
   router.route('/book').get(display_book).delete(delete_book)
@@ -41,4 +42,5 @@ router.route('/menu').post(add_menu).get(display_menu).patch(update_menu).delete
 router.route('/photo').post(authorizemiddleware,upload().array('image',),image_url)
 //profile
 router.route('/profile').get(authorizemiddleware,display_profile)
+
 module.exports=router;
