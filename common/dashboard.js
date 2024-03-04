@@ -10,22 +10,25 @@ res.status(200).json(pgres.rows)
 
 
 const dailytrans=(async(req,res,next)=>{
-    const r_username=req.user.r_username;
+    const r_username=req.user.username;
     const client=await connectDB();
     const nowdate=new Date()
-    let pgres=(await client.query(`select id,food_quantity,calculated_amount from payment where payment_time=$1 and r_username=$2`,[nowdate,r_username])).rows
+    let pgres=(await client.query(`select * from payment where  r_username=$1`,[r_username])).rows
+    console.log(pgres)
     let food_category_quantity={}
     let total=0
 
     pgres.map((row)=>{
-        total=total+row.calculated_amount;
-        row.food_quantity.split(',').map((food_quan)=>{
-            let [category,food,quantity]=food_quan.split('_')
-            let food_cat=category+'_'+food;
+        total=total+Number(row.amount);
+        let lengths=(row.food_quantity.split(',')).length-1
+        row.food_quantity.split(',').map((food_quan,index)=>{
+            if(index==lengths)
+            return 
+            let [food_cat,quantity]=food_quan.split('_')
             if(food_cat in food_category_quantity)
-            food_category_quantity[food_cat]=food_category_quantity[food_cat]+quantity
+            food_category_quantity[food_cat]=food_category_quantity[food_cat]+Number(quantity)
         else
-            food_category_quantity[food_cat]=quantity
+            food_category_quantity[food_cat]=Number(quantity)
         })
     })
     res.status(200).json({food_category_quantity,total})

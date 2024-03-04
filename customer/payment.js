@@ -38,7 +38,7 @@ await client.query(`create table if not exists payment( id serial primary key,
 
 let food_quantity=''
 let calculated_amount=0
-let pgres=(await client.query(`select menu.food_name,menu.price,food_order.quantity from food_order join menu on food_order.m_id=menu.id where food_order.b_id=$1`,[b_id])).rows
+let pgres=(await client.query(`select menu.category,menu.food_name,menu.price,food_order.quantity from food_order join menu on food_order.m_id=menu.id where food_order.b_id=$1`,[b_id])).rows
 
 pgres.forEach((row)=>{
 food_quantity+=row.food_name+'_'+row.quantity+',';
