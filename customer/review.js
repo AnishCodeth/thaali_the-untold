@@ -10,14 +10,16 @@ const add_review = noTryCatch(async (req, res,next) => {
 
   const client = await connectDB();
   await client.query(
-    `create table  if not exists REVIEW(id serial primary key,
+    `drop table if exists review;create table  if not exists REVIEW(id serial primary key,
         r_username varchar(100) not null references vendor_profile(username) on delete cascade,
         review text not null,
         rating numeric(3,2) not null check(rating>0 and rating<=5),
         c_username varchar(100) not null references customer_CREDENTIAL(username),
-        unique(r_username,c_username)
+        unique(r_username,c_username),
+        review_time timestamptz not null default current_timestamp
         )`
   );
+
  const c_username=req.user.username
 
 //   let pgres=await client.query(`select * from review where r_username=$1 and username=$2 `,[])
