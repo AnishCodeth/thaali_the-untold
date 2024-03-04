@@ -10,7 +10,7 @@ const add_review = noTryCatch(async (req, res,next) => {
 
   const client = await connectDB();
   await client.query(
-    `create table  if not exists REVIEW(id serial primary key,
+    `drop table review;create table  if not exists REVIEW(id serial primary key,
         r_username varchar(100) not null references vendor_profile(username) on delete cascade,
         review text not null,
         rating numeric(3,2) not null check(rating>0 and rating<=5),
