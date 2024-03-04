@@ -12,8 +12,7 @@ res.status(200).json(pgres.rows)
 const dailytrans=(async(req,res,next)=>{
     const r_username=req.user.username;
     const client=await connectDB();
-    const nowdate=new Date()
-
+    const nowdate=new Date(req.body.nowdate);
     let pgres=(await client.query(`select * from payment where  r_username=$1 and DATE(payment_time)=DATE($2) `,[r_username,nowdate])).rows
 
     console.log(pgres,nowdate.toISOString())
