@@ -13,8 +13,10 @@ const dailytrans=(async(req,res,next)=>{
     const r_username=req.user.username;
     const client=await connectDB();
     const nowdate=new Date()
-    let pgres=(await client.query(`select * from payment where  r_username=$1 and payment_time=$2`,[r_username,nowdate])).rows
-    console.log(pgres)
+
+    let pgres=(await client.query(`select * from payment where  r_username=$1 and DATE(payment_time)=DATE($2) `,[r_username,nowdate])).rows
+
+    console.log(pgres,nowdate.toISOString())
     let food_category_quantity={}
     let total=0
 
