@@ -40,8 +40,24 @@ const delete_order=noTryCatch((async(req,res)=>{
 }));
 
 
+const update_order=noTryCatch(async(req,res,next)=>{
+  const where_conditions = ["b_id",'id','served','r_username'];//to ensure what what can they update
+  const set_conditions = ['served'];
+  if(!req.body.set )
+  return next(new customError('provide what to update'))
+  const client=await connectDB()
+  const {query,values}=await update_query('food_order',set_conditions,where_conditions,req.body.set,req.body.find)
+  if(values.length==0)
+  return res.json({"msg":"already upto date"})
+  const pgres=await client.query(
+      query,values
+        );
+  res.json({"msg":"update successfull"})
+});
 
 
 
 
-module.exports = {display_order,delete_order};
+
+
+module.exports = {display_order,delete_order,update_order};
