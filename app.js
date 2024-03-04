@@ -18,7 +18,7 @@ app.use(cookieParser());
 //for the dotenv
 require('dotenv').config()
 //for cors
-require('cors')
+// require('cors')
 
 app.use('/admin',adminroute)
 app.use('/vendor',vendorrouter)
