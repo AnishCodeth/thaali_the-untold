@@ -9,8 +9,10 @@ const authorizemiddleware=noTryCatch( async(req,res,next)=>{
     return res.status(402).json({"msg":"provide the token"})
 
     const {username,role}=decodeJWT(token,'access')
-    if(role!='admin')
+    if(role!='admin'){
+        console.log(role)
     return next(new customError('you are not access',401))
+    }
 
     req.user={username,role}
     next()
