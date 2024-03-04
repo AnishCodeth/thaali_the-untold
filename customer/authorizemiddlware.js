@@ -22,7 +22,6 @@ const bookAuthorizeMiddleware=noTryCatch( async(req,res,next)=>{
     return res.status(402).json({"msg":"provide the token"})
 
     const {r_username,t_id,id}=decodeJWT(token,'book_table')
-
     req.book={r_username,t_id,id}
     next()
 })

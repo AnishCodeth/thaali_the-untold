@@ -21,7 +21,7 @@ const add_review = noTryCatch(async (req, res,next) => {
   );
 
  const c_username=req.user.username
-
+ 
 //   let pgres=await client.query(`select * from review where r_username=$1 and username=$2 `,[])
 //   let count=pgres.rows.length
 //   let pgres=await client.query(`select * from payment where r_username=$1 and username=$2 `,[req.body.r_username,req.body.username])

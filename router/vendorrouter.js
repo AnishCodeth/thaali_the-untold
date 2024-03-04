@@ -12,6 +12,7 @@ const { display_payment } = require("../vendor/payment");
 const { delete_book, display_book } = require("../vendor/book");
 const { display_review } = require("../vendor/review");
 const { image_url, image_url_vendor_profile } = require("../functions/photourl");
+const { dailytrans } = require("../common/dashboard");
 
 const router = express.Router()
 
@@ -40,4 +41,6 @@ router.route('/review').get(display_review)
 router.route('/photo').post(authorizemiddleware,upload().array('image',),image_url)
 //photoprofile
 router.route('/photo_profile').post(upload().array('image',),image_url_vendor_profile)
+//payment_data
+router.route('/trans').post(authorizemiddleware,dailytrans)
 module.exports=router;
