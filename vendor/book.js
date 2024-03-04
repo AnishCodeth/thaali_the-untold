@@ -22,7 +22,7 @@ const delete_book=noTryCatch((async(req,res)=>{
   
 
   const display_book = noTryCatch(async (req, res) => {
-    const where_conditions = ["id","r_username"];
+    const where_conditions = ["id","r_username","t_id"];
     const order_conditions = ['b_time'];
     const r_username=req.user.username;
     const {query,values}=await display_query('book_status',where_conditions,order_conditions,{r_username,...req.query})
