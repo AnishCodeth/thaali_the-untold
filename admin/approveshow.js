@@ -13,7 +13,7 @@ const { add_query } = require("../crud_query/add");
 const pendingRequest=noTryCatch(async(req,res,next)=>{
     const role='vendor';
     const client=await connectDB();
-    const pgres=await client.query(`select * from ${role}_credential where verified='pending'`)
+    const pgres=await client.query(`select  from ${role}_profile where verified='pending'`)
     return res.status(200).json(pgres.rows)
   })
 
