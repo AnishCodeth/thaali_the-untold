@@ -30,7 +30,7 @@ router.route('/book').post(authorizemiddleware,add_book)
 router.route('/facility').patch(authorizemiddleware,bookAuthorizeMiddleware,add_facility)
 //menu
 router.route('/menu').get(authorizemiddleware,bookAuthorizeMiddleware,display_menu)
-router.route('/menu').get(authorizemiddleware,display_menu)
+router.route('/menu_db').get(authorizemiddleware,display_menu)
 //order
 router.route('/order').post(authorizemiddleware,bookAuthorizeMiddleware,add_order).get(authorizemiddleware,bookAuthorizeMiddleware,display_order)
 //payment
