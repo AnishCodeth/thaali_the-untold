@@ -5,7 +5,7 @@ const { authorizemiddleware, bookAuthorizeMiddleware } = require('../customer/au
 const { add_profile, display_profile, update_profile } = require('../customer/profile')
 const { add_profile_photo, update_profile_photo } = require('../common/profile_photo')
 const { add_book, add_facility } = require('../customer/book')
-const { display_menu } = require('../customer/menucrud')
+const { display_menu, display_menu_db } = require('../customer/menucrud')
 const { add_order, display_order } = require('../customer/ordercrud')
 const { add_payment, display_payment, bill } = require('../customer/payment')
 const { add_review, display_review, update_review, delete_review } = require('../customer/review')
@@ -30,7 +30,7 @@ router.route('/book').post(authorizemiddleware,add_book)
 router.route('/facility').patch(authorizemiddleware,bookAuthorizeMiddleware,add_facility)
 //menu
 router.route('/menu').get(authorizemiddleware,bookAuthorizeMiddleware,display_menu)
-router.route('/menu_db').get(authorizemiddleware,display_menu)
+router.route('/menu_db').get(authorizemiddleware,display_menu_db)
 //order
 router.route('/order').post(authorizemiddleware,bookAuthorizeMiddleware,add_order).get(authorizemiddleware,bookAuthorizeMiddleware,display_order)
 //payment
