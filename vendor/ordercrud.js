@@ -5,6 +5,7 @@ const customError = require("../functions/customerror");
 const { add_query } = require("../crud_query/add");
 const { display_query } = require("../crud_query/display");
 const { delete_query } = require("../crud_query/delete");
+const { update_query } = require("../crud_query/update");
 
 
 const display_order = noTryCatch(async (req, res) => {
