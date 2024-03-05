@@ -4,7 +4,7 @@ const display_query=async(table_name,where_conditions,order_conditions,queries)=
     let index=0;
 
     let page = queries.page || 1;
-    const limit = queries.limit || 10;
+    const limit = queries.limit || 100;
     const offset = Math.max(0,(page - 1) * limit);
   
     let where_query = Object.keys(queries)

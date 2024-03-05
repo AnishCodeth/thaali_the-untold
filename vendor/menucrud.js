@@ -63,10 +63,12 @@ const update_menu=noTryCatch(async(req,res,next)=>{
 
 const delete_menu=noTryCatch((async(req,res)=>{
   req.body.r_username=req.user.username;
+  
   const where_conditions = ["r_username","id","discount_percentage","food_name","price","available","category"];
   const delete_payload=req.body
   const client=await connectDB()
   const {query,values}=await delete_query('MENU',where_conditions,delete_payload)
+  
   const pgres=await client.query(
       query,values
         );

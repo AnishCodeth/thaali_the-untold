@@ -54,6 +54,11 @@ app.get('/delete', async (req, res) => {
     res.json(await client.query('SELECT * FROM pg_stat_activity'))
   })
 
+  app.get('/restdelete',async(req,res,next)=>{
+const client=await connectDB()
+res.json('hgchg')
+  })
+
   app.use('/',async (req,res)=>{
     return res.status(404).json('not found')
 })

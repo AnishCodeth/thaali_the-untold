@@ -7,12 +7,13 @@ const { add_table, display_table, update_table, delete_table } = require("../ven
 const { add_menu, display_menu, update_menu, delete_menu } = require("../vendor/menucrud");
 const { display_profile, update_profile } = require("../vendor/profile");
 const { add_profile_photo, update_profile_photo } = require("../common/profile_photo");
-const { display_order, delete_order } = require("../vendor/ordercrud");
+const { display_order, delete_order, update_order } = require("../vendor/ordercrud");
 const { display_payment } = require("../vendor/payment");
 const { delete_book, display_book } = require("../vendor/book");
 const { display_review } = require("../vendor/review");
 const { image_url, image_url_vendor_profile } = require("../functions/photourl");
 const { dailytrans } = require("../common/dashboard");
+const { auth } = require("googleapis/build/src/apis/abusiveexperiencereport");
 
 const router = express.Router()
 
@@ -30,7 +31,7 @@ router.route('/menu').post(authorizemiddleware,add_menu).get(authorizemiddleware
 router.route('/profile').get(authorizemiddleware,display_profile).patch(authorizemiddleware,update_profile)
 router.route('/profile/photo').post(authorizemiddleware,add_profile_photo).patch(authorizemiddleware,update_profile_photo)
 //order
-router.route('/order').get(authorizemiddleware,display_order).delete(authorizemiddleware,delete_order)
+router.route('/order').get(authorizemiddleware,display_order).delete(authorizemiddleware,delete_order).patch(authorizemiddleware,update_order)
 //payment
 router.route('/payment').get(authorizemiddleware,display_payment)
 //deletebook
