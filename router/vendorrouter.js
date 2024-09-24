@@ -42,6 +42,6 @@ router.route('/review').get(display_review)
 router.route('/photo').post(authorizemiddleware,upload().array('image',),image_url)
 //photoprofile
 router.route('/photo_profile').post(upload().array('image',),image_url_vendor_profile)
-//payment_data
+//payment_data_route
 router.route('/trans').post(authorizemiddleware,dailytrans)
 module.exports=router;
